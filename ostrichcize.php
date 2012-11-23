@@ -72,13 +72,17 @@ class Struthio_Camelus {
 	 * @return	void
 	 */
 	private function _init() {
+		// Override the default error handler
 		set_error_handler( array( $this, 'error_handler' ) );
 
+		// Plugin paths are defined by hooking into this filter
 		$this->_plugins = apply_filters( 'ostrichcized_plugins', array() );
 
+		// Generate excluded paths based on the defined plugin paths
 		$this->_excluded_paths = $this->_prepend_dir_to_slugs( WP_PLUGIN_DIR, $this->_plugins );
 
-		if ( apply_filters( 'ostrichcize_theme', false ) )
+		// Allow the main theme's errors to be suppressed by filtering this value to return (bool) true
+		if ( true === apply_filters( 'ostrichcize_theme', false ) )
 			$this->_excluded_paths[] = get_stylesheet_directory();
 	}
 
