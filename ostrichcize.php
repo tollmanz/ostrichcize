@@ -16,12 +16,12 @@ if ( ! class_exists( 'Struthio_Camelus' ) ) :
 class Struthio_Camelus {
 
 	/**
-	 * Holds the plugin paths to prepend to $this->_plugins to exclude from error reporting.
+	 * Holds the plugin directories to prepend to $this->_plugins to exclude from error reporting.
 	 *
 	 * @since	0.1
 	 * @var		array
 	 */
-	private $_paths = array();
+	private $_directories = array();
 
 	/**
 	 * Holds the plugin slugs to exclude from error reporting.
@@ -37,7 +37,7 @@ class Struthio_Camelus {
 	 * @since	0.1
 	 * @var		array
 	 */
-	private $_excluded_paths = array();
+	private $_paths = array();
 
 	/**
 	 * The one instance of Struthio_Camelus.
@@ -84,17 +84,20 @@ class Struthio_Camelus {
 		set_error_handler( array( $this, 'error_handler' ) );
 
 		// Directory plans to investigate
-		$this->_paths = apply_filters( 'ostrichcized_paths', array( WP_PLUGIN_DIR, WPMU_PLUGIN_DIR ) );
+		$this->_directories = apply_filters( 'ostrichcized_directories', array( WP_PLUGIN_DIR, WPMU_PLUGIN_DIR ) );
 
 		// Plugin paths are defined by hooking into this filter
 		$this->_plugins = apply_filters( 'ostrichcized_plugins', array() );
 
 		// Generate excluded paths based on the defined plugin paths; check for plugins in multiple places
-		$this->_excluded_paths = $this->_prepend_dir_to_slugs( $this->_paths, $this->_plugins );
+		$this->_paths = $this->_prepend_dir_to_slugs( $this->_directories, $this->_plugins );
+
+		// Allow for a final filtering of the excluded paths
+		$this->_paths = apply_filters( 'ostrichcized_paths', $this->_paths );
 
 		// Allow the main theme's errors to be suppressed by filtering this value to return (bool) true
 		if ( true === apply_filters( 'ostrichcize_theme', false ) )
-			$this->_excluded_paths[] = get_stylesheet_directory();
+			$this->_paths[] = get_stylesheet_directory();
 	}
 
 	/**
@@ -141,7 +144,7 @@ class Struthio_Camelus {
 	 * @return 	bool					True to success error reporting; false to use default error handler.
 	 */
 	public function error_handler( $errno, $errstr, $errfile, $errline ) {
-		foreach ( $this->_excluded_paths as $path ) {
+		foreach ( $this->_paths as $path ) {
 			if ( false !== strpos( $errstr, $path ) )
 				return true;
 
