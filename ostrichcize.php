@@ -16,6 +16,14 @@ if ( ! class_exists( 'Struthio_Camelus' ) ) :
 class Struthio_Camelus {
 
 	/**
+	 * Holds the plugin paths to prepend to $this->_plugins to exclude from error reporting.
+	 *
+	 * @since	0.1
+	 * @var		array
+	 */
+	private $_paths = array();
+
+	/**
 	 * Holds the plugin slugs to exclude from error reporting.
 	 *
 	 * @since	0.1
@@ -75,11 +83,14 @@ class Struthio_Camelus {
 		// Override the default error handler
 		set_error_handler( array( $this, 'error_handler' ) );
 
+		// Directory plans to investigate
+		$this->_paths = apply_filters( 'ostrichcized_paths', array( WP_PLUGIN_DIR, WPMU_PLUGIN_DIR ) );
+
 		// Plugin paths are defined by hooking into this filter
 		$this->_plugins = apply_filters( 'ostrichcized_plugins', array() );
 
-		// Generate excluded paths based on the defined plugin paths
-		$this->_excluded_paths = $this->_prepend_dir_to_slugs( WP_PLUGIN_DIR, $this->_plugins );
+		// Generate excluded paths based on the defined plugin paths; check for plugins in multiple places
+		$this->_excluded_paths = $this->_prepend_dir_to_slugs( $this->_paths, $this->_plugins );
 
 		// Allow the main theme's errors to be suppressed by filtering this value to return (bool) true
 		if ( true === apply_filters( 'ostrichcize_theme', false ) )
@@ -93,16 +104,18 @@ class Struthio_Camelus {
 	 *
 	 * @since 	0.1
 	 *
-	 * @param 	string		$dir		Directory path to prepend.
+	 * @param 	array		$dirs		Array of directory paths to prepend.
 	 * @param 	array		$slugs		Slugs that are prepended.
 	 * @return 	array					Array of slugs prepended with a specified directory path.
 	 */
-	private function _prepend_dir_to_slugs( $dir, $slugs ) {
+	private function _prepend_dir_to_slugs( $dirs, $slugs ) {
 		$paths = array();
 
 		foreach ( $slugs as $slug ) {
-			$path    = trailingslashit( $dir ) . $slug;
-			$paths[] = trailingslashit( $path );
+			foreach ( $dirs as $dir ) {
+				$path    = trailingslashit( $dir ) . $slug;
+				$paths[] = trailingslashit( $path );
+			}
 		}
 
 		return $paths;
