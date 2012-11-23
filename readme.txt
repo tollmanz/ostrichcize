@@ -46,6 +46,8 @@ function my_ostrichcize_theme() {
 add_action( 'plugins_loaded', 'my_ostrichcize_theme', 1 );
 </pre></code>
 
+Thanks to Jeremy Felt (@jeremyfelt) for assistance naming the plugin!
+
 == Installation ==
 
 1. Install Ostrichcize if not already installed (http://wordpress.org/extend/plugins/ostrichcize/)
