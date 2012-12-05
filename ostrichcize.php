@@ -160,13 +160,30 @@ class Struthio_Camelus {
 /**
  * Wrapper function to return the one Struthio_Camelus instance.
  *
+ * @since	0.1
  * @return	Struthio_Camelus
  */
 function struthrio_get_the_ostrich() {
 	return Struthio_Camelus::instance();
 }
 
+/**
+ * Load in the Ostrich, but only do it if one of the filters is used.
+ *
+ * @since	0.1.1
+ * @return	void
+ */
+function struthio_load_the_ostrich() {
+	if ( has_filter( 'ostrichcized_plugins' )
+		|| has_filter( 'ostrichcized_directories' )
+		|| has_filter( 'ostrichcized_paths' )
+		|| has_filter( 'ostrichcize_theme' ) ) {
+		Struthio_Camelus::instance();
+	}
+}
+
 // Initiate the plugin functionality
-add_action( 'plugins_loaded', 'struthrio_get_the_ostrich' );
+add_action( 'muplugins_loaded', 'struthio_load_the_ostrich' );
+add_action( 'plugins_loaded', 'struthio_load_the_ostrich' );
 
 endif;
