@@ -4,7 +4,7 @@ Donate Link: http://wordpress.org
 Tags: debug, error reporting
 Requires at least: 3.3
 Tested up to: trunk
-Stable tag: 0.1
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,7 @@ can add to the list of plugins for which no notices will be shown.
 
 To add to this list simply write something like:
 
-<pre><code>
+<code>
 function my_ostrichcized_plugins( $slugs ) {
 	$slugs[] = 'debug-bar-cron';
 	return $slugs;
@@ -32,21 +32,22 @@ function my_pre_my_ostrichcized_plugins() {
 }
 
 add_action( 'plugins_loaded', 'my_pre_my_ostrichcized_plugins', 1 );
-</pre></code>
+</code>
 
 Note that the filter must be added before any offending code is run in order to redefine the error reporting function
 before it is first called. The means that in most cases, this code will need to run from a plugin and not a theme.
 
 To turn off PHP error reporting for a theme, run:
 
-<pre><code>
+<code>
 function my_ostrichcize_theme() {
     add_filter( 'ostrichcize_theme', '__return_true' );
 }
 add_action( 'plugins_loaded', 'my_ostrichcize_theme', 1 );
-</pre></code>
+</code>
 
-Thanks to Jeremy Felt (@jeremyfelt) for assistance naming the plugin!
+* Thanks to Jeremy Felt (@jeremyfelt) for assistance naming the plugin!
+* Thanks to Jeremy Clarke (@jeremyclarke) for improving the Ostrich to work better with certain MU plugin scenarios.
 
 == Installation ==
 
@@ -75,10 +76,17 @@ errors due to my custom code are displayed. Ostrichcize allows you to do just th
 
 == Changelog ==
 
+= 0.1.1 =
+* Load plugin on "muplugins_loaded"
+* Only instantiate the Ostrich if an Ostrichcize filter is used
+
 = 0.1 =
 * Initial release
 
 == Upgrade Notice ==
+
+= 0.1.1 =
+* Performance enhancment and better MU plugin support
 
 = 0.1 =
 Initial Release
