@@ -56,20 +56,11 @@ class Struthio_Camelus {
 	 * @return	Struthio_Camelus
 	 */
 	public static function instance() {
-		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Struthio_Camelus();
-			self::$instance->_init();
-		}
+		if ( is_null( self::$instance ) )
+			self::$instance = new self();
+
 		return self::$instance;
 	}
-
-	/**
-	 * Dummy constructor for PHP 5+ compatibility.
-	 *
-	 * @since	0.1
-	 * @return	Struthio_Camelus
-	 */
-	private function __construct() {}
 
 	/**
 	 * Setup the basic plugin actions.
@@ -77,9 +68,9 @@ class Struthio_Camelus {
 	 * @uses	set_error_handler, apply_filters, Struthio_Camelus::_prepend_dir_to_slugs, get_stylesheet_directory
 	 *
 	 * @since	0.1
-	 * @return	void
+	 * @return	Struthio_Camelus
 	 */
-	private function _init() {
+	private function __construct() {
 		// Override the default error handler
 		set_error_handler( array( $this, 'error_handler' ) );
 
