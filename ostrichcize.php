@@ -174,10 +174,10 @@ function struthrio_get_the_ostrich() {
  * @return	void
  */
 function struthio_load_the_ostrich() {
-	if ( has_filter( 'ostrichcized_plugins' )
-		|| has_filter( 'ostrichcized_directories' )
-		|| has_filter( 'ostrichcized_paths' )
-		|| has_filter( 'ostrichcize_theme' ) ) {
+	if ( false !== has_filter( 'ostrichcized_plugins' )
+		|| false !== has_filter( 'ostrichcized_directories' )
+		|| false !== has_filter( 'ostrichcized_paths' )
+		|| false !== has_filter( 'ostrichcize_theme' ) ) {
 		Struthio_Camelus::instance();
 	}
 }
