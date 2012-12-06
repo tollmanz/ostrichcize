@@ -39,6 +39,15 @@ class Struthio_Camelus {
 	 */
 	private $_paths = array();
 
+
+	/**
+	 * Holds an instance of ErrorHandler from php_error.net
+	 * if the class exists.
+	 *
+	 * @var php_error\ErrorHandler
+	 */
+	private $php_error_handler = null;
+
 	/**
 	 * The one instance of Struthio_Camelus.
 	 *
@@ -46,6 +55,7 @@ class Struthio_Camelus {
 	 * @var		Struthio_Camelus
 	 */
 	private static $instance;
+
 
 	/**
 	 * Instantiate or return the one Struthio_Camelus instance.
@@ -71,6 +81,10 @@ class Struthio_Camelus {
 	 * @return	Struthio_Camelus
 	 */
 	private function __construct() {
+
+		if ( class_exists( '\\php_error\\ErrorHandler' ) )
+			$this->php_error_handler = \php_error\reportErrors( array( 'wordpress'=> true ) );
+
 		// Override the default error handler
 		set_error_handler( array( $this, 'error_handler' ) );
 
@@ -135,6 +149,7 @@ class Struthio_Camelus {
 	 * @return 	bool					True to success error reporting; false to use default error handler.
 	 */
 	public function error_handler( $errno, $errstr, $errfile, $errline ) {
+
 		foreach ( $this->_paths as $path ) {
 			if ( false !== strpos( $errstr, $path ) )
 				return true;
@@ -143,6 +158,11 @@ class Struthio_Camelus {
 				return true;
 		}
 
+		if ( !empty( $this->php_error_handler ) ) {
+			$ex = new ErrorException( $errstr, $errno, $errno, $errfile, $errline );
+			$this->php_error_handler->reportException( $ex );
+		}
+		
 		// The path was not found, so report the error
 		return false;
 	}
