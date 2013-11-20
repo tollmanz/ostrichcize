@@ -107,8 +107,8 @@ class Struthio_Camelus {
 
 		foreach ( $slugs as $slug ) {
 			foreach ( $dirs as $dir ) {
-				$path    = trailingslashit( $dir ) . $slug;
-				$paths[] = trailingslashit( $path );
+				$path    = trailingslashit( trailingslashit( $dir ) . $slug );
+				$paths[] = str_replace( array( '/', '\\' ), DIRECTORY_SEPARATOR, $path );
 			}
 		}
 
