@@ -12,8 +12,8 @@ Hide PHP error reporting for specified plugins or the current theme.
 
 == Description ==
 
-At the first sign of trouble, an ostrich buries its head in the sand. Ostrichcize allows a plugin or theme developer to
-bury his or her head in the sand by turning off error reporting for select plugins or the current theme.
+Ostrichcize allows a plugin or theme developer to bury his or her head in the sand by turning off error reporting for 
+select plugins or the current theme. This isn't something ostriches actually do, but many people think it is.
 
 If you have ever installed a plugin or worked on a site with a plugin that throws numerous of errors and notices, but do
 not have the time to fix the issue, you can turn off those notices with this plugin. By simply filtering the plugin, you
