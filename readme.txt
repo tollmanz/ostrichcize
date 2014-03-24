@@ -26,12 +26,7 @@ function my_ostrichcized_plugins( $slugs ) {
 	$slugs[] = 'debug-bar-cron';
 	return $slugs;
 }
-
-function my_pre_my_ostrichcized_plugins() {
-    add_filter( 'ostrichcized_plugins', 'my_ostrichcized_plugins' );
-}
-
-add_action( 'plugins_loaded', 'my_pre_my_ostrichcized_plugins', 1 );
+add_filter( 'ostrichcized_plugins', 'my_ostrichcized_plugins' );
 </code>
 
 Note that the filter must be added before any offending code is run in order to redefine the error reporting function
@@ -40,10 +35,7 @@ before it is first called. The means that in most cases, this code will need to 
 To turn off PHP error reporting for a theme, run:
 
 <code>
-function my_ostrichcize_theme() {
-    add_filter( 'ostrichcize_theme', '__return_true' );
-}
-add_action( 'plugins_loaded', 'my_ostrichcize_theme', 1 );
+add_filter( 'ostrichcize_theme', '__return_true' );
 </code>
 
 * Thanks to Jeremy Felt (@jeremyfelt) for assistance naming the plugin!
