@@ -88,7 +88,7 @@ class Struthio_Camelus {
 
 		// Allow the main theme's errors to be suppressed by filtering this value to return (bool) true
 		if ( true === apply_filters( 'ostrichcize_theme', false ) )
-			$this->_paths[] = get_stylesheet_directory();
+			array_push( $this->_paths, get_template_directory(), get_stylesheet_directory() );
 	}
 
 	/**
